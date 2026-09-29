@@ -1,5 +1,14 @@
 /* Small helpers ported from the mockup (section 2. STATE + HELPERS). */
 
+/* Real rosters are usually "Lastname, Firstname M." rather than "Firstname M. Lastname" —
+   handle both so a greeting never shows the surname or a stray comma. */
+export function firstName(n) {
+  const s = String(n || "").trim();
+  const afterComma = s.includes(",") ? s.split(",")[1] : s;
+  const word = (afterComma || "").trim().split(/\s+/)[0] || s.split(/\s+/)[0] || s;
+  return word.replace(/,$/, "");
+}
+
 export const initials = n =>
   String(n || "").split(" ").filter(w => w.length > 1 && !w.includes(".")).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 

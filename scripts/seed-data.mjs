@@ -34,7 +34,7 @@ export const FACEVAL = {
   subtitle:"BSIT Faculty Evaluation Form, SY 2025–2026",
   scope:"per-instructor",
   scale:SCALE_EVAL,
-  rationale:"Your feedback helps your teacher improve. Answer honestly, leave no item blank, and evaluate every teacher. A teacher handling two subjects is evaluated once per subject. Your responses stay confidential.",
+  rationale:"The purpose of this evaluation is to give feedback to your teacher in his/her subject in order to further improve his/her teaching performance. To make this evaluation reliable: (1) please be honest and objective in answering; (2) do not leave any item blank; (3) leave no teacher behind — evaluate all of them, and if a teacher handles two or more subjects, evaluate them once for each subject, rating 5 as the highest and 1 as the lowest; (4) your truthful response is highly appreciated; and (5) your responses will be kept with utmost confidentiality.",
   sections:[
     {id:"A",title:"Teaching effectiveness",note:"The teacher explained topics clearly, used effective learning strategies, provided timely and constructive feedback, encouraged questions and discussion, and showed enthusiasm and good preparation.",items:[
       {id:"A1",text:"Explains topics clearly and in an organized way."},
@@ -57,7 +57,7 @@ export const FACEVAL = {
       {id:"C4",text:"Disruptions are handled fairly and promptly."},
       {id:"C5",text:"I can share my ideas without fear of being judged."}
     ]},
-    {id:"D",title:"Resources and technology",note:"Instructional materials and technology made lessons easier to understand, more engaging, and better supported my learning.",items:[
+    {id:"D",title:"Use of resources and technology",note:"Instructional materials and technology made lessons easier to understand, more engaging, and better supported my learning.",items:[
       {id:"D1",text:"Instructional materials make the lessons easier to understand."},
       {id:"D2",text:"Technology is used properly and without long delays."},
       {id:"D3",text:"Handouts, slides, and files are available when I need them."},
