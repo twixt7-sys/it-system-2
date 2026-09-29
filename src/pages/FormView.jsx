@@ -226,6 +226,8 @@ export default function FormView({ formId }) {
         <button className="btn sm" onClick={leave}><Icon name="ri-close-line" />Leave</button>
       </div>
 
+      {form.rationale && curStep === 0 && <div className="notice">{form.rationale}</div>}
+
       <div className="qhead">
         <div className="steps">
           {secs.map((x, i) => {

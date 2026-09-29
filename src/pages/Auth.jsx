@@ -4,6 +4,7 @@ import { Icon } from "../lib/icons";
 import { useAuth } from "../context/AuthContext";
 import { useUI } from "../context/UIContext";
 import { UserError } from "../data/api";
+import { firstName } from "../lib/helpers";
 import { DEMO_MODE, firebaseConfigured } from "../firebase";
 
 /* Sign-in page (mockup viewAuth). Students sign in with their student number only — no OTP yet. */
@@ -32,7 +33,7 @@ export default function Auth() {
     try {
       const s = await signInStudent(sid);
       navigate("/home");
-      toast("Signed in as " + s.name.split(" ")[0], "good");
+      toast("Signed in as " + firstName(s.name), "good");
     } catch (err) { fail(err); } finally { setBusy(false); }
   };
 

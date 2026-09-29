@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../lib/icons";
-import { initials, evalDone, surveyDone } from "../lib/helpers";
+import { initials, firstName, evalDone, surveyDone } from "../lib/helpers";
 import { useData } from "../context/DataContext";
 
 /* mockup viewHome */
@@ -14,7 +14,7 @@ export default function StudentHome() {
     <div className="fade">
       <div className="page-head">
         <div>
-          <h1>{s.name.split(" ")[0]}, here is what is left</h1>
+          <h1>{firstName(s.name)}, here is what is left</h1>
           <p className="sub">Two things to finish this term: evaluate each of your teachers, then answer the course delivery survey once.</p>
         </div>
       </div>
