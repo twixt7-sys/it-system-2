@@ -1,0 +1,67 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(db)/documents/admins/$(request.auth.uid));
+    }
+    function isStudent() {
+      return signedIn() && exists(/databases/$(db)/documents/sessions/$(request.auth.uid));
+    }
+    // student number bound to this (anonymous) sign-in
+    function sid() {
+      return get(/databases/$(db)/documents/sessions/$(request.auth.uid)).data.studentId;
+    }
+
+    // Admin accounts are created by scripts/seed.mjs (or by hand in the console).
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // One session per anonymous sign-in; ties the uid to an enrolled student number.
+    match /sessions/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['studentId', 'at'])
+        && request.resource.data.studentId is string
+        && exists(/databases/$(db)/documents/students/$(request.resource.data.studentId));
+      allow update, delete: if false;
+    }
+
+    // Anyone signed in can look up ONE student by number; only admins can list or change the roster.
+    match /students/{id} {
+      allow get: if signedIn();
+      allow list, create, update, delete: if isAdmin();
+    }
+
+    match /forms/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Responses are write-once. The doc ID is studentId__formId__targetId, so a student
+    // can only submit each form (per subject) once, and never edit it afterwards.
+    match /responses/{rid} {
+      allow read: if isAdmin() || (isStudent() && resource.data.studentId == sid());
+      allow create: if isStudent()
+        && request.resource.data.studentId == sid()
+        && request.resource.data.formId in ['faceval', 'survey']
+        && request.resource.data.targetId is string
+        && request.resource.data.answers is map
+        && rid == sid() + '__' + request.resource.data.formId + '__' + request.resource.data.targetId
+        && (
+          (request.resource.data.formId == 'survey' && request.resource.data.targetId == 'once')
+          ||
+          (request.resource.data.formId == 'faceval'
+            && {'course': request.resource.data.course, 'instructor': request.resource.data.instructor}
+                 in get(/databases/$(db)/documents/students/$(sid())).data.load)
+        );
+      allow update, delete: if false;
+    }
+  }
+}

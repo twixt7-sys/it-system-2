@@ -1,0 +1,11 @@
+/* Small additions on top of the original mockup styles (app.css is kept verbatim). */
+
+/* forms used for Enter-to-submit should not change layout */
+form.plain{margin:0;padding:0;border:0}
+
+/* spinner-free busy state for buttons */
+.btn.busy{opacity:.7;pointer-events:none}
+
+/* the original toast slid down only 120% of its height, leaving ~13px visible; hide it once it has slid away */
+.toast{transition:transform .34s cubic-bezier(.34,1.3,.64,1),visibility 0s linear .34s;visibility:hidden}
+.toast.on{visibility:visible;transition:transform .34s cubic-bezier(.34,1.3,.64,1),visibility 0s}
